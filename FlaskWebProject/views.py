@@ -1,4 +1,4 @@
-"""
+﻿"""
 Routes and views for the flask application.
 """
 
@@ -12,7 +12,7 @@ def home():
     """Renders the home page."""
     return render_template(
         'index.html',
-        title='Home Page',
+        title='Home Page 2',
         year=datetime.now().year,
     )
 
