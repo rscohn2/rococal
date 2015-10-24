@@ -5,6 +5,12 @@ Routes and views for the flask application.
 from datetime import datetime
 from flask import render_template
 from FlaskWebProject import app
+from FlaskWebProject.nec import get_cal as nec_get_cal
+
+@app.route('/api/nec')
+def nec():
+    """Renders the nec calendar."""
+    return nec_get_cal()
 
 @app.route('/')
 @app.route('/home')
