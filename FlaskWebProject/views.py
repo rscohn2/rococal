@@ -7,7 +7,7 @@ from flask import render_template
 from FlaskWebProject import app
 from FlaskWebProject.nec import get_cal as nec_get_cal
 
-@apply.route('/api/test')
+@app.route('/api/test')
 def test_cal():
     return '''BEGIN:VCALENDAR
 PRODID:-//Google Inc//Google Calendar 70.9054//EN
