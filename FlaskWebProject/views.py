@@ -7,6 +7,33 @@ from flask import render_template
 from FlaskWebProject import app
 from FlaskWebProject.nec import get_cal as nec_get_cal
 
+@apply.route('/api/test')
+def test_cal():
+    return '''BEGIN:VCALENDAR
+PRODID:-//Google Inc//Google Calendar 70.9054//EN
+VERSION:2.0
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:test calendar
+X-WR-TIMEZONE:America/New_York
+X-WR-CALDESC:my test calendar description
+BEGIN:VEVENT
+DTSTART:20151025T143000Z
+DTEND:20151025T153000Z
+DTSTAMP:20151025T140749Z
+UID:tmfe0nrjslietpapsu7fvt7sc0@google.com
+CREATED:20151025T140629Z
+DESCRIPTION:description of event\nwhith line feeds
+LAST-MODIFIED:20151025T140629Z
+LOCATION:location for event
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:title of event
+TRANSP:OPAQUE
+END:VEVENT
+END:VCALENDAR
+'''
+
 @app.route('/api/nec')
 def nec():
     """Renders the nec calendar."""
