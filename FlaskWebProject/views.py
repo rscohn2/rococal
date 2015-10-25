@@ -51,6 +51,10 @@ def test_fp():
 def test_cal():
     return send_file(BytesIO(resp),mimetype='text/calendar',as_attachment=True,attachment_filename='rocox.ics')
 
+@app.route('/test/harvard')
+def test_harvard():
+    return send_file('body.txt',mimetype='text/calendar',as_attachment=True,attachment_filename='ical-event-1111122333.ics')
+
 @app.route('/api/nec')
 def nec():
     """Renders the nec calendar."""
