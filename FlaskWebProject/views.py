@@ -55,6 +55,10 @@ def test_cal():
 def test_harvard():
     return send_file('body.txt',mimetype='text/calendar',as_attachment=True,attachment_filename='ical-event-1111122333.ics')
 
+@app.route('/test/harvard2')
+def test_harvard2():
+    return send_file('body2.txt',mimetype='text/calendar',as_attachment=True,attachment_filename='ical-event-1111122333.ics')
+
 @app.route('/api/nec')
 def nec():
     """Renders the nec calendar."""
