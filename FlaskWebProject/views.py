@@ -3,14 +3,14 @@ Routes and views for the flask application.
 """
 
 from datetime import datetime
-from flask import render_template
+from flask import render_template, send_file
 from FlaskWebProject import app
 from FlaskWebProject.nec import get_cal as nec_get_cal
+from io import BytesIO
+from os import getcwd
 
-@app.route('/api/test')
-def test_cal():
-    return '''BEGIN:VCALENDAR
-PRODID:-//Google Inc//Google Calendar 70.9054//EN
+resp = '''BEGIN:VCALENDAR
+PRODID:-//ROCO//ROCO Calendar 70.9054//EN
 VERSION:2.0
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
@@ -21,7 +21,7 @@ BEGIN:VEVENT
 DTSTART:20151025T143000Z
 DTEND:20151025T153000Z
 DTSTAMP:20151025T140749Z
-UID:tmfe0nrjslietpapsu7fvt7sc0@google.com
+UID:tmfe0nrjslietpapsu7fvt7sc0@roco.com
 CREATED:20151025T140629Z
 DESCRIPTION:description of event\nwhith line feeds
 LAST-MODIFIED:20151025T140629Z
@@ -33,6 +33,23 @@ TRANSP:OPAQUE
 END:VEVENT
 END:VCALENDAR
 '''
+
+@app.route('/api/getcwd')
+def wd():
+    #send_file(BytesIO(resp),attachment_filename='x.ics',as_attachment=True)
+    return getcwd()
+
+@app.route('/test/plainfile')
+def test_plain():
+    return send_file('x.txt')
+
+@app.route('/test/fp')
+def test_fp():
+    return send_file(BytesIO('abc'),mimetype='text/plain',as_attachment=True,attachment_filename='x.txt')
+
+@app.route('/test/cal')
+def test_cal():
+    return send_file(BytesIO(resp),mimetype='text/calendar',as_attachment=True,attachment_filename='rocox.ics')
 
 @app.route('/api/nec')
 def nec():
