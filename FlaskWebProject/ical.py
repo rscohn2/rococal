@@ -2,6 +2,7 @@
 from datetime import datetime
 import pytz
 import unittest
+import hashlib
 
 class rCal:
     """ Container for the Calendar we will server
@@ -32,6 +33,7 @@ class rCal:
         ev = Event()
         ev.add('summary', summary)
         ev.add('dtstart', start)
+        ev.add('uid',hashlib.sha224(ev.to_ical(sorted=True)).hexdigest())
         self.cal.add_component(ev)
 
 
