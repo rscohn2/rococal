@@ -25,7 +25,7 @@ DTSTART:20150927T180000Z
 DTSTAMP:20151025T161331Z
 CREATED:20150917T150259Z
 LAST-MODIFIED:20150928T030210Z
-UID:62216-1443376800-1443384000@cal.roco.com
+UID:162216-1443376800-1443384000@cal.roco.com
 SUMMARY:no end
 DESCRIPTION:Mandatory training for New PLAP students. Primary training is on 9/26/15. Make-up training is on 9/27/15.
 URL:http://hls.harvard.edu/event/plap-new-student-training/
@@ -36,7 +36,7 @@ END:VEVENT
 BEGIN:VEVENT
 DTSTART:20150927T180000Z
 DTSTAMP:20151025T161331Z
-UID:62216-1443376800-1443384000@cal.roco.com
+UID:262216-1443376800-1443384000@cal.roco.com
 SUMMARY:no end, no modified, no created
 DESCRIPTION:Mandatory training for New PLAP students. Primary training is on 9/26/15. Make-up training is on 9/27/15.
 URL:http://hls.harvard.edu/event/plap-new-student-training/
