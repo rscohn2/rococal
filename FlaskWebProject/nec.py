@@ -1,3 +1,4 @@
+﻿import unittest
 import requests
 from bs4 import BeautifulSoup
 from ical import rCal
@@ -38,10 +39,10 @@ def get_day_data(day):
 def parse_day_data(text):
     return BeautifulSoup(text, 'html.parser')
 
-def get_cal():
-    rcal = rCal()
+def get_cal(rendered=False):
+    rcal = rCal('NEC', 'Concerts at New England Conservatory')
     rcal.add_event(summary='a new event', start=rcal.make_time(year=2015,month=10,day=1,hour=3,minute=0))
-    return rcal.to_ical()
+    return rcal.to_ical(rendered)
 
 sample_day = '''<div class="calendar-events-page-navigation"><div class="backBt"><a href="/calendar_event/2015-10-10">&lt;</a></div><div class="todayDate"><a href="/calendar_event/2015-10-11" class="active">October 11, 2015</a></div><div class="nextBt"><a href="/calendar_event/2015-10-12">&gt;</a></div><br style="clear:both";/></div><h4 class="calendar-events-list-title">Featured events</h4><table class="calendar-events-list-table"><tr>
 					<td class="list-time">1:00 PM</td>
@@ -64,10 +65,18 @@ sample_day = '''<div class="calendar-events-page-navigation"><div class="backBt"
 						</div>
 '''
 
+class Test(unittest.TestCase):
+    def test_nec_extract_from_string(self):
+        d = extract_events(parse_day_data(sample_day))
+        print(str(d))
+
+    def test_nec_fetch_day(self):
+        sample_date = '2015-10-11'
+        d = get_events(sample_date)
+        print(str(d))
+
+    def test_nec_full_cal(self):
+        print(get_cal())
+
 if __name__ == '__main__':
-    sample_date = '2015-10-11'
-    # get_day('2015-10-11')
-    #d = extract_events(parse_day_data(sample_day))
-    # d = get_events(sample_date)
-    #print(str(d))
-    print(get_cal())
+    unittest.main()

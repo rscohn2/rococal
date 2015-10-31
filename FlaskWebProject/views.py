@@ -5,6 +5,7 @@ Routes and views for the flask application.
 from datetime import datetime
 from flask import render_template, send_file
 from FlaskWebProject import app
+from FlaskWebProject import nec
 from FlaskWebProject.nec import get_cal as nec_get_cal
 from io import BytesIO
 from os import getcwd
@@ -59,10 +60,11 @@ def test_harvard():
 def test_harvard2():
     return send_file('body2.txt',mimetype='text/calendar',as_attachment=True,attachment_filename='ical-event-1111122333.ics')
 
-@app.route('/api/nec')
-def nec():
+@app.route('/')
+@app.route('/nec/ical')
+def nec_ical():
     """Renders the nec calendar."""
-    return nec_get_cal()
+    return send_file(BytesIO(nec.get_cal()), mimetype='text/calendar', as_attachment=True,attachment_filename='ical-event-nec.ics')
 
 @app.route('/')
 @app.route('/home')

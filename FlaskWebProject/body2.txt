@@ -13,7 +13,31 @@ DTSTAMP:20151025T161331Z
 CREATED:20150917T150259Z
 LAST-MODIFIED:20150928T030210Z
 UID:62216-1443376800-1443384000@cal.roco.com
-SUMMARY:PLAP new student training
+SUMMARY:Original
+DESCRIPTION:Mandatory training for New PLAP students. Primary training is on 9/26/15. Make-up training is on 9/27/15.
+URL:http://hls.harvard.edu/event/plap-new-student-training/
+CATEGORIES:Program/Workshop
+ORGANIZER;CN="Morton%2C%20Sarah":MAILTO:smorton@law.harvard.edu
+LOCATION:WCC WCC1023
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20150927T180000Z
+DTSTAMP:20151025T161331Z
+CREATED:20150917T150259Z
+LAST-MODIFIED:20150928T030210Z
+UID:62216-1443376800-1443384000@cal.roco.com
+SUMMARY:no end
+DESCRIPTION:Mandatory training for New PLAP students. Primary training is on 9/26/15. Make-up training is on 9/27/15.
+URL:http://hls.harvard.edu/event/plap-new-student-training/
+CATEGORIES:Program/Workshop
+ORGANIZER;CN="Morton%2C%20Sarah":MAILTO:smorton@law.harvard.edu
+LOCATION:WCC WCC1023
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20150927T180000Z
+DTSTAMP:20151025T161331Z
+UID:62216-1443376800-1443384000@cal.roco.com
+SUMMARY:no end, no modified, no created
 DESCRIPTION:Mandatory training for New PLAP students. Primary training is on 9/26/15. Make-up training is on 9/27/15.
 URL:http://hls.harvard.edu/event/plap-new-student-training/
 CATEGORIES:Program/Workshop
