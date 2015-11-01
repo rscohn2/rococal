@@ -1,7 +1,8 @@
 ﻿import unittest
 import requests
+import datetime
 from bs4 import BeautifulSoup
-from ical import rCal
+from ical import rCal, rcal_config
 
 necURL = 'http://necmusic.edu'
 calURL = necURL + '/calendar_event'
@@ -9,42 +10,52 @@ calURL = necURL + '/calendar_event'
 def get_links(s):
     events = s.find_all('td', 'list-event')
     links = []
-    titles = []
+    summaries = []
     for e in events:
         links.append(e.a['href'])
-        titles.append(e.a.text)
-    return (links,titles)
+        summaries.append(e.a.text)
+    return (links,summaries)
 
-def get_events(day):
-    return extract_events(parse_day_data(get_day_data(day)))
-
-
-def extract_events(s):
-    times = s.find_all('td','list-time')
+def extract_events(event_date, s):
+    starts = s.find_all('td','list-time')
     locations = s.find_all('td', 'list-price')
     descriptions = s.find_all('div', 'list-description')
-    (links, titles) = get_links(s)
+    (urls, summaries) = get_links(s)
     events = []
-    for (time,loc,desc,link,title) in zip(times, locations, descriptions, links, titles):
-        events.append({'time': time.text, 'location': loc.text, 'description': desc.text + ' ' + necURL +  link, 'title': title})
+    for (start,location,description,url,summary) in zip(starts, locations, descriptions, urls, summaries):
+        fullURL = necURL + url
+        start_date = datetime.datetime.strptime(start.text, '%I:%M %p')
+        start_date = start_date.replace(year=event_date.year, month=event_date.month, day=event_date.day )
+        events.append({'start': start_date, 'location': location.text, 'description': description.text + ' ' + fullURL, 'summary': summary})
     return events
 
 def get_item(s, item):
     return s.find_all('td', item)
 
+def get_day_html(date):
+    url = calURL + '/' + date.strftime('%Y-%m-%d')
+    return requests.get(url).text
 
-def get_day_data(day):
-    return requests.get(calURL + '/' + day).text
-
-def parse_day_data(text):
+def parse_day_html(text):
     return BeautifulSoup(text, 'html.parser')
 
-def get_cal(rendered=False):
-    rcal = rCal('NEC', 'Concerts at New England Conservatory')
-    rcal.add_event(summary='a new event', start=rcal.make_time(year=2015,month=10,day=1,hour=3,minute=0))
-    return rcal.to_ical(rendered)
+def get_cal(sample_html=None):
+    today = datetime.date.today()
+    events = []
+    for day_delta in range(rcal_config['days']):
+        date = today + datetime.timedelta(days=day_delta)
+        if sample_html is None:
+            html = get_day_html(date)
+        else:
+            html = sample_html
+        events.extend(extract_events(date, parse_day_html(html)))
+    cal = rCal(name='NEC', description='Concerts at New England Conservatory', events=events)
+    return cal.to_ical()
 
-sample_day = '''<div class="calendar-events-page-navigation"><div class="backBt"><a href="/calendar_event/2015-10-10">&lt;</a></div><div class="todayDate"><a href="/calendar_event/2015-10-11" class="active">October 11, 2015</a></div><div class="nextBt"><a href="/calendar_event/2015-10-12">&gt;</a></div><br style="clear:both";/></div><h4 class="calendar-events-list-title">Featured events</h4><table class="calendar-events-list-table"><tr>
+
+
+class Test(unittest.TestCase):
+    sample_day = '''<div class="calendar-events-page-navigation"><div class="backBt"><a href="/calendar_event/2015-10-10">&lt;</a></div><div class="todayDate"><a href="/calendar_event/2015-10-11" class="active">October 11, 2015</a></div><div class="nextBt"><a href="/calendar_event/2015-10-12">&gt;</a></div><br style="clear:both";/></div><h4 class="calendar-events-list-title">Featured events</h4><table class="calendar-events-list-table"><tr>
 					<td class="list-time">1:00 PM</td>
 					<td class="list-event"><a href="/event/14956">Lluis Claret Cello Masterclass</a><br/><div class="list-description">Acclaimed cellist Lluis Claret leads this evening's masterclass. This masterclass will be live streamed. <a href="/event/14956">more</a></div></td>
 					<td class="list-price">Pierce Hall</td>
@@ -65,17 +76,10 @@ sample_day = '''<div class="calendar-events-page-navigation"><div class="backBt"
 						</div>
 '''
 
-class Test(unittest.TestCase):
-    def test_nec_extract_from_string(self):
-        d = extract_events(parse_day_data(sample_day))
-        print(str(d))
+    def test_nec_get_cal_from_string(self):
+        print(get_cal(sample_html=self.sample_day))
 
-    def test_nec_fetch_day(self):
-        sample_date = '2015-10-11'
-        d = get_events(sample_date)
-        print(str(d))
-
-    def test_nec_full_cal(self):
+    def test_nec_get_cal(self):
         print(get_cal())
 
 if __name__ == '__main__':

@@ -4,49 +4,34 @@ import pytz
 import unittest
 import hashlib
 
-class rCal:
-    """ Container for the Calendar we will server
+rcal_config = {'days': 2}
+
+class rCal(Calendar):
+    """ Container for the Calendar we will serve
     """
-    debug = True
-
-    def __init__(self, name, description=''):
-        cal = Calendar()
-        cal.add('prodid', '-//roco ical exporter//roco.com//')
-        cal.add('version', '2.0')
-        cal.add('calscale','GREGORIAN')
-        cal.add('method','PUBLISH')
-        cal.add('x-wr-calname', name)
-        cal.add('x-original-url','http://cal.roco.com')
-        cal.add('x-wr-caldesc', description)
-        self.cal = cal
-
-    def to_ical(self, rendered=False):
-        cal = self.cal.to_ical()
-        if self.debug:
-            print cal
-        return cal
-
-    def make_time(self, year, month, day, hour, minute):
-        return datetime(year, month, day, hour, minute, tzinfo=pytz.timezone('America/New_York'))
-
-    def add_event(self, summary, start):
-        ev = Event()
-        ev.add('summary', summary)
-        ev.add('dtstart', start)
-        ev.add('uid',hashlib.sha224(ev.to_ical(sorted=True)).hexdigest())
-        self.cal.add_component(ev)
-
+    def __init__(self, name, description, events):
+        Calendar.__init__(self)
+        self.add('prodid', '-//roco ical exporter//roco.com//')
+        self.add('version', '2.0')
+        self.add('calscale','GREGORIAN')
+        self.add('method','PUBLISH')
+        self.add('x-wr-calname', name)
+        self.add('x-original-url','http://cal.roco.com')
+        self.add('x-wr-caldesc', description)
+        for event in events:
+            ev = Event()
+            self.add_component(ev)
+            ev.add('summary', event['summary'])
+            ev.add('dtstart', pytz.timezone('America/New_York').localize(event['start']))
+            ev.add('location', event['location'])
+            ev.add('description', event['description'])
+            ev.add('uid', hashlib.sha224(ev.to_ical(sorted=True)).hexdigest())
 
 class Test(unittest.TestCase):
-    def test_ical_render(self):
-        rcal = rCal('test calendar')
-        rcal.add_event(summary='a new event', start=rcal.make_time(year=2015,month=10,day=1,hour=3,minute=0))
+    def test_ical_synthetic(self):
+        events = [{'summary': 'a new event', 'start': datetime(year=2015,month=10,day=1,hour=3,minute=0)}]
+        rcal = rCal(name='test calendar', description='test calendar description', events=events)
         print(rcal.to_ical())
 
 if __name__ == '__main__':
     unittest.main()
-
-if __name__ == 'aaaa__main__':
-    rcal = rCal()
-    rcal.add_event(summary='a new event', start=rcal.make_time(year=2015,month=10,day=1,hour=3,minute=0))
-    print(rcal.to_ical())
