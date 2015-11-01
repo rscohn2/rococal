@@ -4,7 +4,7 @@ import pytz
 import unittest
 import hashlib
 
-rcal_config = {'days': 2}
+rcal_config = {'days': 14}
 
 class rCal(Calendar):
     """ Container for the Calendar we will serve
