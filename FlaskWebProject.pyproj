@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="FlaskWebProject\ical.py" />
+    <Compile Include="FlaskWebProject\mit.py" />
     <Compile Include="FlaskWebProject\nec.py" />
     <Compile Include="runserver.py" />
     <Compile Include="FlaskWebProject\__init__.py" />

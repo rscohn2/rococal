@@ -23,6 +23,8 @@ class rCal(Calendar):
             self.add_component(ev)
             ev.add('summary', event['summary'])
             ev.add('dtstart', pytz.timezone('America/New_York').localize(event['start']))
+            if 'end' in event:
+                ev.add('dtend', pytz.timezone('America/New_York').localize(event['end']))
             ev.add('location', event['location'])
             ev.add('description', event['description'])
             ev.add('uid', hashlib.sha224(ev.to_ical(sorted=True)).hexdigest())
